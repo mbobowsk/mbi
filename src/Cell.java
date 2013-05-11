@@ -4,8 +4,15 @@
 
 public class Cell {
 	
+	private Directions direction = Directions.DIRECTION_NULL;
+	
 	Cell(int score) {
 		this.score = score;
+	}
+
+	Cell(int score, Directions direction){
+		this.score = score;
+		this.direction = direction;
 	}
 	
 	// Dwa wymiary
@@ -14,7 +21,7 @@ public class Cell {
 		this.index = index;
 	}
 	
-	// Dwa wymiary
+	// Trzy wymiary
 	Cell(int score, int index, int index2) {
 		this.score = score;
 		this.index = index;
@@ -51,5 +58,13 @@ public class Cell {
 	public void setIndex(int index, int index2) {
 		this.index = index;
 		this.index2 = index2;
+	}
+	
+	public Directions getDirection() {
+		return direction;
+	}
+	
+	public void setDirection(Directions direction) {
+		this.direction = direction;
 	}
 }
