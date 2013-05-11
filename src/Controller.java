@@ -80,11 +80,135 @@ public class Controller {
 		findSimilarity(sub1L, sub2L, offsetX, offsetY);
 		findSimilarity(sub1R, sub2R, offsetX+x, offsetY+y);
 	}
+	
+	
+		
+	
+	
+	/******************** MAGIA *******************************/
+	
+	public void findSimilarity2D(String str1, String str2, String str3, int offsetX, int offsetY, int offsetZ) {
+		String first, second;
+		
+		if ( str1.length() == 0 ) {
+			if ( str2.length() == 1 && str3.length() == 1) {
+				result.add(new Tuple(offsetX,offsetY,offsetZ));
+				return;
+			}
+			first = str2;
+			second = str3;
+		}
+		else if ( str2.length() == 0 ) {
+			if ( str1.length() == 1 && str3.length() == 1) {
+				result.add(new Tuple(offsetX,offsetY,offsetZ));
+				return;
+			}
+			first = str1;
+			second = str3;
+		}
+		else if ( str3.length() == 0 ) {
+			if ( str1.length() == 1 && str2.length() == 1) {
+				result.add(new Tuple(offsetX,offsetY,offsetZ));
+				return;
+			}
+			first = str1;
+			second = str2;
+			
+			
+			// Długość i szerokość tablicy
+			int cols = first.length() + 1;
+			int rows = second.length() + 1;
 
+			// Połowa kolumn - miejsce od którego zaczynamy liczyć indeks
+			int x = cols/2;
+
+			// Kolumny macierzy
+			Cell col1[] = new Cell[rows];
+			Cell col2[] = new Cell[rows];
+
+			// Inicjalizacja pierwszej kolumny
+			for ( int i = 0; i < rows; i++ ) {
+				col1[i] = new Cell(i*model.c);
+			}
+
+			// Dla kolejnych kolumn
+			for ( int i = 1; i < cols; i++) {
+				// Oblicz nową kolumnę
+				col2 = new Cell[rows];
+				col2[0] = new Cell(i*model.c,0);
+				for ( int j = 1; j < rows; j++) {
+					int cross = col1[j-1].getScore() + match(first.charAt(i-1),second.charAt(j-1));
+					int gapVertical = col2[j-1].getScore() + model.gap;
+					int gapHorizontal = col1[j].getScore() + model.gap;
+					int max = Math.max(Math.max(cross,gapVertical),gapHorizontal);
+
+					// Środek tablicy - indeksy inicjalizowane kolejnymi j
+					if ( i <= x ) {
+						col2[j] = new Cell(max,j);
+					}
+					// Indeks "przechodzi" z poprzedniej kolumny
+					else {
+						int index;
+						if ( cross == max )
+							index = col1[j-1].getIndex();
+						else if ( gapHorizontal == max )
+							index = col1[j].getIndex();
+						else
+							index = col2[j-1].getIndex();
+						col2[j] = new Cell(max,index);
+					}
+				}			
+				// Druga staje się pierwszą
+				col1 = col2;
+			}
+
+			int y = col2[rows-1].getIndex();
+			
+			if ( first.length() == 1 || second.length() == 1 )
+				return;
+			// Podział stringów wg x i y
+			String sub1L = first.substring(0, x);
+			String sub1R = first.substring(x,first.length());
+			String sub2L = second.substring(0, y);
+			String sub2R = second.substring(y,second.length());
+			
+			if ( str1.length() == 0 ) {
+				result.add(new Tuple(offsetX ,offsetY+x, offsetZ+y));
+				findSimilarity2D(str1, sub1L, sub2L, offsetX, offsetY, offsetZ);
+				findSimilarity2D(str1, sub1R, sub2R, offsetX, offsetY+x, offsetZ+y);
+			}
+			else if ( str2.length() == 0 ) {
+				result.add(new Tuple(offsetX+x, offsetY, offsetZ+y));
+				findSimilarity2D(sub1L, str2 ,sub2L, offsetX, offsetY, offsetZ);
+				findSimilarity2D(sub1R, str2 ,sub2R, offsetX+x, offsetY, offsetZ+y);
+			}
+			else // str3 == 0 
+				{
+				result.add(new Tuple(offsetX+x, offsetY+y, offsetZ));
+				findSimilarity2D(sub1L, sub2L, str3, offsetX, offsetY, offsetZ);
+				findSimilarity2D(sub1R, sub2R, str3, offsetX+x, offsetY+y, offsetZ);
+			}
+			
+			
+			
+		}
+	}
+	
+	/******************** END MAGIA ****************************/
+	
+	
+
+	
+	
 	// I wersja dla trzech wymiarów
 	public void findSimilarity(String first, String second, String third, int offsetX, int offsetY, int offsetZ) {
-		if ( first.length() < 2 || second.length() < 2 || third.length() < 2 ) {
+		if ( first.length() == 1 && second.length() == 1 && third.length() == 1 ) {
 			result.add(new Tuple(offsetX,offsetY,offsetZ));
+			return;
+		}
+		
+		if ( first.length() == 0 || second.length() == 0 || third.length() == 0 ) {
+			findSimilarity2D(first,second,third,offsetX,offsetY,offsetZ);
 			return;
 		}
 
@@ -308,21 +432,15 @@ public class Controller {
 		return index;
 	}
 
-	private Cell findMax(int[] array) {
-		int max = array[0];
-		for ( int m = 1; m < array.length; m++ ) {
-			max = max > array[m] ? max : array[m];
-		}
-		return new Cell(max);
-	}
-
 
 	public static void main(String[] args) {
 		Controller c = new Controller();
-		c.findSimilarity("GACAAAAA","GACCCAAC","GACCCGAA",0,0,0);
+		/* Nie działa nawet przy warunku < 2
+		c.findSimilarity("GTTACT","GAATTT","GACCCT",0,0,0);
+		c.findSimilarity("GTTACT","GAATTT","G",0,0,0); */
+		c.findSimilarity("GTTA","GAAT","G",0,0,0);
 		for ( Tuple t : c.result ) {
 			System.out.println(t);
 		}
 	}
-
 }
