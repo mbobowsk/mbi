@@ -1,16 +1,16 @@
 import java.util.HashSet;
 
-
 public class ControllerClean {
-
-	public ControllerClean() {}
 
 	private Model model = new Model();
 
 	// Container for result path
 	private HashSet<Tuple> result = new HashSet<Tuple>();
+	// Container for memory stats
+	private HashSet<Long> memoryAllocation = new HashSet<Long>();
 
 	public void findSimilarity(String first, String second, String third, int offsetX, int offsetY, int offsetZ) {
+		memStats();
 		int cols = first.length() + 1;
 		int rows = second.length() + 1;
 		int depth = third.length() + 1;
@@ -184,7 +184,6 @@ public class ControllerClean {
 					col1[i][j] = new Cell(max);
 				}
 			}
-
 			
 			for (int i = 1; i < cols; i++) {
 				// Create and fill col2 based on col1
@@ -218,7 +217,6 @@ public class ControllerClean {
 								}
 								col2[j][k] = new Cell(max, index, index2);
 							}				
-
 						}
 						else if (j != 0 && k == 0) {
 							// front wall
@@ -245,7 +243,6 @@ public class ControllerClean {
 								}
 								col2[j][k] = new Cell(max, index, index2);
 							}	
-
 						} else {
 							int cross = col1[j][k-1].getScore() + match(first.charAt(i-1),'-',third.charAt(k-1));
 							int left = col1[j][k].getScore() + match(first.charAt(i-1),'-','-');
@@ -306,14 +303,14 @@ public class ControllerClean {
 		}
 	}
 
-	// Zwraca karę/nagrodę za dopasowanie dwóch znaków
+	// Returns similarity of nucleotides
 	private int match(char a, char b) {
 		int row = charToIndex(a);
 		int col = charToIndex(b);
 		return model.similarityMatrix[row][col];
 	}
 
-	// Zwraca karę/nagrodę za dopasowanie trzech znaków
+	// Returns similarity of nucleotides
 	private int match(char a, char b, char c) {
 		int row = charToIndex(a);
 		int col = charToIndex(b);
@@ -324,7 +321,7 @@ public class ControllerClean {
 	}
 
 
-	// Przyjmuje znak i zwraca odpowiadający mu indeks w macierzy kar i nagród
+	// Translates character to index
 	private int charToIndex(char a) {
 		int index;
 		if (a == 'A') {
@@ -351,13 +348,36 @@ public class ControllerClean {
 	public HashSet<Tuple> getResult() {
 		return result;
 	}
+	
+	// Memory stats
+	private void memStats() {
+		Runtime runtime = Runtime.getRuntime();
+		long allocatedMemory = runtime.totalMemory();
+		memoryAllocation.add(allocatedMemory);
+	}
+	
+	// Returns memory allocation in MB
+	public long getMaxMemory() {
+		long max = 0;
+		for ( long l : memoryAllocation ) {
+			if ( l > max )
+				max = l;
+		}
+		return max / (1024*1024);
+	}
 
 	public static void main(String[] args) {
 		ControllerClean c = new ControllerClean();
-		c.findSimilarity("GCAAAAAAAAAAAAA", "GCAAAAAAAAAAAA", "GCAAAAAAAAAAAA", 0, 0, 0);
-		for ( Tuple t : c.result ) {
+		String first = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		c.findSimilarity(first, first, first, 0, 0, 0);
+		/*for ( Tuple t : c.result ) {
 			System.out.println(t);
-		}
+		}*/
+		System.out.println(c.getMaxMemory());
 	}
 
 }
