@@ -5,9 +5,10 @@ public class ControllerClean {
 
 	public ControllerClean() {}
 
-	public Model model = new Model();
+	private Model model = new Model();
+
 	// Container for result path
-	public HashSet<Tuple> result = new HashSet<Tuple>();
+	private HashSet<Tuple> result = new HashSet<Tuple>();
 
 	public void findSimilarity(String first, String second, String third, int offsetX, int offsetY, int offsetZ) {
 		int cols = first.length() + 1;
@@ -341,6 +342,14 @@ public class ControllerClean {
 		else
 			index = 4;
 		return index;
+	}
+	
+	public Model getModel() {
+		return model;
+	}
+
+	public HashSet<Tuple> getResult() {
+		return result;
 	}
 
 	public static void main(String[] args) {
