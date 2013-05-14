@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
+import java.util.SortedSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -154,14 +154,55 @@ public class View extends JFrame{
 				controller.findSimilarity(inputSequence1, inputSequence2, inputSequence3, 0, 0, 0);
 				Long stopTime = System.currentTimeMillis();
 				statusLabel.setText("Computing time: " + (stopTime - startTime)/1000 + " sec");
-				outputSequence1 = "A";
-				outputSequence2 = "B";
-				outputSequence3 = "C";
+				outputSequence1 = "";
+				outputSequence2 = "";
+				outputSequence3 = "";
+				int x = 0;
+				int y = 0;
+				int z = 0;
+				int difX, difY, difZ;
+				SortedSet<Tuple> result = controller.getResult();
+				for ( Tuple t : result ) {
+					System.out.println(t);
+					difX = t.x - x;
+					difY = t.y - y;
+					difZ = t.z - z;
+					
+					if (difX == 1 && difY == 1 && difZ == 1){
+						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
+						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
+						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
+					} else if(difX == 0 && difY == 1 && difZ == 1){
+						outputSequence1 = outputSequence1 + "_";
+						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
+						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
+					} else if(difX == 0 && difY == 0 && difZ == 1){
+						outputSequence1 = outputSequence1 + "_";
+						outputSequence2 = outputSequence2 + "_";
+						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
+					} else if(difX == 0 && difY == 1 && difZ == 0){
+						outputSequence1 = outputSequence1 + "_";
+						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
+						outputSequence3 = outputSequence3 + "_";
+					} else if(difX == 1 && difY == 0 && difZ == 1){
+						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
+						outputSequence2 = outputSequence2 + "_";
+						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
+					} else if(difX == 1 && difY == 1 && difZ == 0){
+						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
+						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
+						outputSequence3 = outputSequence3 + "_";
+					} else if(difX == 1 && difY == 0 && difZ == 0){
+						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
+						outputSequence2 = outputSequence2 + "_";
+						outputSequence3 = outputSequence3 + "_";
+					}
+					
+					x = t.x;
+					y = t.y;
+					z = t.z;
+				}
 				outputArea.setText(outputSequence1 + '\n' + outputSequence2 + '\n' + outputSequence3);
-				HashSet<Tuple> result = controller.getResult();
-//				for ( Tuple t : result ) {
-//					System.out.println(t);
-//				}
 			}
 		});
 	}

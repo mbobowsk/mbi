@@ -1,11 +1,31 @@
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class ControllerClean {
 
 	private Model model = new Model();
 
 	// Container for result path
-	private HashSet<Tuple> result = new HashSet<Tuple>();
+	private SortedSet<Tuple> result = new TreeSet<Tuple>(new Comparator<Tuple>() {
+
+		@Override
+		public int compare(Tuple t1, Tuple t2) {
+			if (t1.x < t2.x && t1.y < t2.y && t1.z < t2.z)
+				return -1;
+			if (t1.x > t2.x && t1.y > t2.y && t1.z > t2.z)
+				return 1;
+			if (t1.x == t2.x && t1.y == t2.y && t1.z == t2.z)
+				return 0;
+			
+			if ((t1.x == t2.x && t1.y <= t2.y && t1.z <= t2.z) || (t1.x <= t2.x && t1.y == t2.y && t1.z <= t2.z) || (t1.x <= t2.x && t1.y <= t2.y && t1.z == t2.z))
+				return -1;
+			if ((t1.x == t2.x && t1.y >= t2.y && t1.z >= t2.z) || (t1.x == t2.x && t1.y >= t2.y && t1.z >= t2.z) || (t1.x == t2.x && t1.y >= t2.y && t1.z >= t2.z))
+				return 1;
+			return 0;
+		}
+	});
 	// Container for memory stats
 	private HashSet<Long> memoryAllocation = new HashSet<Long>();
 
@@ -345,7 +365,7 @@ public class ControllerClean {
 		return model;
 	}
 
-	public HashSet<Tuple> getResult() {
+	public SortedSet<Tuple> getResult() {
 		return result;
 	}
 	
