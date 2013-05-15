@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,7 +48,8 @@ public class View extends JFrame{
 	private JScrollPane outputScrollPane;
 	private JLabel inputLabel;
 	private JLabel outputLabel;
-	private JLabel statusLabel;
+	private JLabel timeLabel;
+	private JLabel memoryLabel;
 	private Dimension spaces;
 	private JFileChooser fileChooser;
 	private String inputSequence1;
@@ -155,7 +157,8 @@ public class View extends JFrame{
 				controller.findSimilarity(inputSequence1, inputSequence2, inputSequence3, 0, 0, 0);
 				Long stopTime = System.currentTimeMillis();
 				double time = (double) (stopTime - startTime);
-				statusLabel.setText("Computing time: " + (double)Math.round(time * 100d) / 100000d + " sec");
+				timeLabel.setText("Computing time: " + (double)Math.round(time * 100d) / 100000d + " sec");
+				memoryLabel.setText("Memory usage: " + controller.getMaxMemory() + "MB");
 				
 				outputSequence1 = "";
 				outputSequence2 = "";
@@ -165,8 +168,9 @@ public class View extends JFrame{
 				int z = 0;
 				int difX, difY, difZ;
 				SortedSet<Tuple> result = controller.getResult();
+				String gap = "-";
 				for ( Tuple t : result ) {
-					System.out.println(t);
+//					System.out.println(t);
 					difX = t.x - x;
 					difY = t.y - y;
 					difZ = t.z - z;
@@ -176,29 +180,29 @@ public class View extends JFrame{
 						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
 						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
 					} else if(difX == 0 && difY == 1 && difZ == 1){
-						outputSequence1 = outputSequence1 + "_";
+						outputSequence1 = outputSequence1 + gap;
 						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
 						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
 					} else if(difX == 0 && difY == 0 && difZ == 1){
-						outputSequence1 = outputSequence1 + "_";
-						outputSequence2 = outputSequence2 + "_";
+						outputSequence1 = outputSequence1 + gap;
+						outputSequence2 = outputSequence2 + gap;
 						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
 					} else if(difX == 0 && difY == 1 && difZ == 0){
-						outputSequence1 = outputSequence1 + "_";
+						outputSequence1 = outputSequence1 + gap;
 						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
-						outputSequence3 = outputSequence3 + "_";
+						outputSequence3 = outputSequence3 + gap;
 					} else if(difX == 1 && difY == 0 && difZ == 1){
 						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
-						outputSequence2 = outputSequence2 + "_";
+						outputSequence2 = outputSequence2 + gap;
 						outputSequence3 = outputSequence3 + inputSequence3.charAt(t.z-1);
 					} else if(difX == 1 && difY == 1 && difZ == 0){
 						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
 						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
-						outputSequence3 = outputSequence3 + "_";
+						outputSequence3 = outputSequence3 + gap;
 					} else if(difX == 1 && difY == 0 && difZ == 0){
 						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
-						outputSequence2 = outputSequence2 + "_";
-						outputSequence3 = outputSequence3 + "_";
+						outputSequence2 = outputSequence2 + gap;
+						outputSequence3 = outputSequence3 + gap;
 					}
 					
 					x = t.x;
@@ -214,17 +218,20 @@ public class View extends JFrame{
 		inputArea = new JTextArea();
 		inputArea.setRows(3);
 		inputArea.setEditable(false);
+		inputArea.setFont(new Font("Monospaced",Font.PLAIN,12));
 		inputScrollPane = new JScrollPane(inputArea);
 		outputArea = new JTextArea();
 		outputArea.setRows(3);
 		outputArea.setEditable(false);
+		outputArea.setFont(new Font("Monospaced",Font.PLAIN,12));
 		outputScrollPane = new JScrollPane(outputArea);
 	}
 
 	private void initLabels(){
 		inputLabel = new JLabel("Input sequences:");
 		outputLabel = new JLabel("Output sequences:");
-		statusLabel = new JLabel("");
+		timeLabel = new JLabel("");
+		memoryLabel = new JLabel("");
 	}
 
 	private void initPanels(){
@@ -256,9 +263,10 @@ public class View extends JFrame{
 		
 		statusPanel = new JPanel();
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-		statusPanel.setPreferredSize(new Dimension(this.getWidth(), 16));
-		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-		statusPanel.add(statusLabel);
+		statusPanel.setPreferredSize(new Dimension(this.getWidth(), 32));
+		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
+		statusPanel.add(timeLabel);
+		statusPanel.add(memoryLabel);
 	}
 	
 	private boolean validateSequences(String s1, String s2, String s3){
