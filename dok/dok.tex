@@ -1,0 +1,93 @@
+\documentclass[a4paper,12pt,oneside,notitlepage,onecolumn]{article}
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{fontenc}
+\usepackage{graphicx}
+
+\usepackage[OT4]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{polski}
+\usepackage{indentfirst}
+\usepackage{graphics}
+
+\usepackage[dvips]{hyperref}
+
+\author{Michał Bobowski, Andrzej Dudziec}
+\date{2013-05-15}
+\title{Badanie podobieństwa trzech sekwencji}
+
+\begin{document}
+  \maketitle
+
+\section{Opis algorytmu}
+
+Algorytm realizuje badanie podobieństwa trzech sekwencji przy stałym zużyciu pamięci.
+Jest uogólnioneniem algorytmu Needlmana-Wunscha, korzystającym z zasady dziel i zwyciężaj.
+Podobieństwo jest określane jedynie dla całych sekwencji, a wynikiem działania algorytmu jest ciąg współrzędnych, tworzących ścieżkę w macierzy przejść (od pierwszego do ostatniego punktu).
+
+Przeprowadzenie pełnych obliczeń zgodnie z algorytmem Needlmana-Wunscha wymaga alokacji trójwymiarowej macierzy przejść, której wymiary odpowiadają długościom badanych sekwencji nukleotydów. 
+Uniemożliwia to zbadanie podobieństwa zestawu sekwencji o długości kilkuset nukleotydów.
+
+Niniejszy algorytm redukuje ilość potrzebnej pamięci, zwiększając przy tym złożoność obliczeniową. 
+Macierz przejść jest obliczana „w locie” przy użyciu dwóch aktualnych plastrów. 
+Celem obliczenia macierzy jest znalezienie komórki ze środkowego plastra przez którą przechodzi najlepsze rozwiązanie, a następnie rekurencyjne wywołanie funkcji dla podzbiorów sekwencji wyznaczonych przez tą komórkę.
+Warunkiem zatrzymania rekurencji jest uzyskanie przynajmniej jednej sekwencji o długości równej 1 - od tego momentu obliczana jest pełna tablica przejść.
+Tym samym złożoność pamięciowa algorytmu jest ograniczona do poziomu algorytmu obliczającego dwie sekwencje, gdyż w końcowych wywołaniach istnieje potrzeba zbudowania dwuwymiarowej macierzy.
+
+\section{Opis aplikacji}
+Aplikacja została zrealizowana w języku Java w oparciu o wzorzec projektowy MVC. Zawiera następujące klasy:
+\begin{itemize}
+ \item Model – klasa zawierająca zmienne wpływające na działanie algorytmu, czyli macierz kar i nagród oraz wysokość kar za przerwę i wiszący nukleotyd.
+ \item View – klasa odpowiedzialna za widok, interakcję z użytkownikiem i wyświetlanie wyników końcowych.
+ \item Controller – klasa implementująca algorytm i przeprowadzająca obliczenia z nim związane.
+ \item Cell – klasa reprezentująca pojedynczą komórkę macierzy.
+ \item Tuple – krotka opakowujące współrzędne w macierzy.
+\end{itemize}
+
+Interfejs użytkownika składa się z czterech przycisków:
+\begin{itemize}
+ \item Matrix - pozwala na edycję macierzy kar i nagród.
+ \item Open - wczytuje plik z danymi wejściowymi.
+ \item Save - zapisuje wynik do pliku tekstowego.
+ \item Run - uruchamia algorytm
+\end{itemize}
+Dodatkowo wyświetlane są sekwencje wejściowe, dopasowanie końcowe, czas obliczeń oraz maksymalne zużycie pamięci.
+Formatem wejściowym dla programu są pliki tekstowe, zawierające w trzech pierwszych liniach kolejne sekwencje znaków A, C, G oraz T.
+
+\section{Testy wydajnościowe}
+Testy wydajnościowe zostały przeprowadzone na komputerze wyposażonym w procesor Intel Dual Core z taktowaniem 2,6 GHz.
+Polegały one na porównaniu trzech identycznych sekwencji o założonej długości (od 100 do 1000 nukleotydów).
+Dane testowe są zapisane w plikach test100.txt, ...., test1000.txt.
+
+Warto zaznaczyć, że pomiar alokacji pamięci jest obarczony pewnym błędem.
+Po pierwsze część pamięci jest pochłaniana przez elementy niezwiązane z rzeczywistymi obliczeniami (np. interfejs użytkownika), a
+po drugie wirtualna maszyna Javy może nie raportować dokładnych wartości.
+
+\begin{table}[t]
+\caption{Testy wydajnościowe}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Długość sekwencji & Alokacja pamięci (MB) & Czas obliczeń (s)\\
+  \hline
+  100 & 86 & 0.461\\
+  \hline
+  200 & 184 & 1.262 \\
+  \hline
+  300 & 184 & 4.393 \\
+  \hline
+  500 & 208 & 22.849 \\
+  \hline
+  1000 & 493 & 349.171 \\
+  \hline
+\end{tabular} 
+\end{table}
+
+Wyniki testów wskazują, że dwukrotne zwiększenie długości sekwencji powoduje ok. czterokrotny wzrost czasu obliczeń.
+Poziom alokacji pamięci rośnie znacznie wolniej i nie powinien być ograniczeniem nawet dla bardzo długich sekwencji.
+
+
+\section{Pozostałe testy}
+
+\end{document}

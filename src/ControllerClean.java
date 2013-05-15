@@ -392,9 +392,9 @@ public class ControllerClean {
 
 	public static void main(String[] args) {
 		ControllerClean c = new ControllerClean();
-		String first = "T";
-		String second = "C";
-		String third = "CT";
+		String first = "GATTGTT";
+		String second = "GATTTT";
+		String third = "GATTCT";
 		c.findSimilarity(first, second, third, 0, 0, 0);
 		for ( Tuple t : c.result ) {
 			System.out.println(t);
