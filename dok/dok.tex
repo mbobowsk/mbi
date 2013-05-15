@@ -39,19 +39,19 @@ Tym samym złożoność pamięciowa algorytmu jest ograniczona do poziomu algory
 \section{Opis aplikacji}
 Aplikacja została zrealizowana w języku Java w oparciu o wzorzec projektowy MVC. Zawiera następujące klasy:
 \begin{itemize}
- \item Model – klasa zawierająca zmienne wpływające na działanie algorytmu, czyli macierz kar i nagród oraz wysokość kar za przerwę i wiszący nukleotyd.
- \item View – klasa odpowiedzialna za widok, interakcję z użytkownikiem i wyświetlanie wyników końcowych.
- \item Controller – klasa implementująca algorytm i przeprowadzająca obliczenia z nim związane.
- \item Cell – klasa reprezentująca pojedynczą komórkę macierzy.
- \item Tuple – krotka opakowujące współrzędne w macierzy.
+ \item \emph{Model} – klasa zawierająca zmienne wpływające na działanie algorytmu, czyli macierz kar i nagród oraz wysokość kar za przerwę i wiszący nukleotyd.
+ \item \emph{View} – klasa odpowiedzialna za widok, interakcję z użytkownikiem i wyświetlanie wyników końcowych.
+ \item \emph{Controller} – klasa implementująca algorytm i przeprowadzająca obliczenia z nim związane.
+ \item \emph{Cell} – klasa reprezentująca pojedynczą komórkę macierzy.
+ \item \emph{Tuple} – krotka opakowujące współrzędne w macierzy.
 \end{itemize}
 
 Interfejs użytkownika składa się z czterech przycisków:
 \begin{itemize}
- \item Matrix - pozwala na edycję macierzy kar i nagród.
- \item Open - wczytuje plik z danymi wejściowymi.
- \item Save - zapisuje wynik do pliku tekstowego.
- \item Run - uruchamia algorytm
+ \item \emph{Matrix} - pozwala na edycję macierzy kar i nagród.
+ \item \emph{Open} - wczytuje plik z danymi wejściowymi.
+ \item \emph{Save} - zapisuje wynik do pliku tekstowego.
+ \item \emph{Run} - uruchamia algorytm
 \end{itemize}
 Dodatkowo wyświetlane są sekwencje wejściowe, dopasowanie końcowe, czas obliczeń oraz maksymalne zużycie pamięci.
 Formatem wejściowym dla programu są pliki tekstowe, zawierające w trzech pierwszych liniach kolejne sekwencje znaków A, C, G oraz T.
@@ -89,5 +89,17 @@ Poziom alokacji pamięci rośnie znacznie wolniej i nie powinien być ograniczen
 
 
 \section{Pozostałe testy}
+Pozostałe testy pokazują poprawność działania programu pod kątem merytorycznym.
+Wykorzystane zostały w nich rzeczywiste sekwencje nukleotydów.
+
+Plik \emph{testA.txt} bazuje na sekwencji 368 nukleotydów występującej w mRNA człowieka.
+Pierwsza badana sekwencja jest kompletna, natomiast w drugiej i trzeciej usunięto losowo po 10 nukleotydów.
+Wynik odzwierciedla przerwy zgodnie z rzeczywistością.
+
+Plik \emph{testB.txt} wykorzystuje gen HSGLTH1 o długości 1021 nukleotydów.
+Pierwsza sekwencja zawiera kompletny gen.
+W drugiej wprowadzono punktowe mutacje na indeksach 10, 20, 30, 40 i 50 oraz kilka par przerw.
+W trzeciej wprowadzono punktowe mutacje na indeksach 15, 25, 35, 45 i 55 oraz kilka par przerw.
+Wynik jest zgodny z oczekiwaniami
 
 \end{document}

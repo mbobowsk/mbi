@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.3.16)  15 MAY 2013 21:18
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.3.16)  15 MAY 2013 22:01
 entering extended mode
  %&-line parsing enabled.
 **dok.tex
@@ -311,23 +311,30 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 70.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 70.
- [2] [3] (./dok.aux) ) 
+ [2]
+Overfull \hbox (2.0566pt too wide) in paragraph at lines 95--98
+[]\OT4/cmr/m/n/12 Plik \OT4/cmr/m/it/12 te-stA.txt \OT4/cmr/m/n/12 ba-zuje na s
+e-kwen-cji 368 nu-kle-oty-dów wy-st¦-pu-j¡-cej w mRNA
+ []
+
+[3] (./dok.aux) ) 
 Here is how much of TeX's memory you used:
- 6494 strings out of 495026
- 87449 string characters out of 1181802
- 153092 words of memory out of 3000000
- 9580 multiletter control sequences out of 15000+50000
- 9775 words of font info for 31 fonts, out of 3000000 for 9000
+ 6496 strings out of 495026
+ 87470 string characters out of 1181802
+ 155092 words of memory out of 3000000
+ 9581 multiletter control sequences out of 15000+50000
+ 10313 words of font info for 32 fonts, out of 3000000 for 9000
  48 hyphenation exceptions out of 8191
  38i,7n,45p,331b,585s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/fonts/enc/dvips/pl/plrm.enc}</u
-sr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/te
-xmf-texlive/fonts/type1/public/pl/plbx12.pfb></usr/share/texmf-texlive/fonts/ty
-pe1/public/pl/plr12.pfb></usr/share/texmf-texlive/fonts/type1/public/pl/plr17.p
-fb>
-Output written on dok.pdf (3 pages, 47643 bytes).
+{/usr/share/texmf-texlive/fonts/enc/dvips/pl/plit.enc}{/usr/sh
+are/texmf-texlive/fonts/enc/dvips/pl/plrm.enc}</usr/share/texmf-texlive/fonts/t
+ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public
+/pl/plbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/pl/plr12.pfb></usr/
+share/texmf-texlive/fonts/type1/public/pl/plr17.pfb></usr/share/texmf-texlive/f
+onts/type1/public/pl/plti12.pfb>
+Output written on dok.pdf (3 pages, 58611 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
+ 61 PDF objects out of 1000 (max. 8388607)
  9 named destinations out of 1000 (max. 500000)
  33 words of extra memory for PDF output out of 10000 (max. 10000000)
 

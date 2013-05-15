@@ -75,10 +75,25 @@ po drugie wirtualna maszyna Javy może nie raportować dokładnych wartości.
   \hline
   200 & 184 & 1.262 \\
   \hline
+  300 & 184 & 4.393 \\
+  \hline
+  500 & 208 & 22.849 \\
+  \hline
+  1000 & 493 & 349.171 \\
+  \hline
 \end{tabular} 
 \end{table}
 
+Wyniki testów wskazują, że dwukrotne zwiększenie długości sekwencji powoduje ok. czterokrotny wzrost czasu obliczeń.
+Poziom alokacji pamięci rośnie znacznie wolniej i nie powinien być ograniczeniem nawet dla bardzo długich sekwencji.
+
 
 \section{Pozostałe testy}
+Pozostałe testy pokazują poprawność działania programu pod kątem merytorycznym.
+Wykorzystane zostały w nich rzeczywiste sekwencje nukleotydów.
+
+Plik \emph{test_real_1.txt} bazuje na sekwencji 368 nukleotydów występującej w mRNA człowieka.
+Pierwsza badana sekwencja jest kompletna, natomiast w drugiej i trzeciej usunięto losowo po 10 nukleotydów.
+Wynik odzwierciedla przerwy zgodnie z rzeczywistością.  
 
 \end{document}

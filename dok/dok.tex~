@@ -84,9 +84,22 @@ po drugie wirtualna maszyna Javy może nie raportować dokładnych wartości.
 \end{tabular} 
 \end{table}
 
-Wyniki testów wskazują, że dwukrotny 
+Wyniki testów wskazują, że dwukrotne zwiększenie długości sekwencji powoduje ok. czterokrotny wzrost czasu obliczeń.
+Poziom alokacji pamięci rośnie znacznie wolniej i nie powinien być ograniczeniem nawet dla bardzo długich sekwencji.
 
 
 \section{Pozostałe testy}
+Pozostałe testy pokazują poprawność działania programu pod kątem merytorycznym.
+Wykorzystane zostały w nich rzeczywiste sekwencje nukleotydów.
+
+Plik \emph{testA.txt} bazuje na sekwencji 368 nukleotydów występującej w mRNA człowieka.
+Pierwsza badana sekwencja jest kompletna, natomiast w drugiej i trzeciej usunięto losowo po 10 nukleotydów.
+Wynik odzwierciedla przerwy zgodnie z rzeczywistością.
+
+Plik \emph{testB.txt} wykorzystuje gen HSGLTH1 o długości 1021 nukleotydów.
+Pierwsza sekwencja zawiera kompletny gen.
+W drugiej wprowadzono punktowe mutacje na indeksach 10, 20, 30, 40 i 50 oraz kilka par przerw.
+W trzeciej wprowadzono punktowe mutacje na indeksach 15, 25, 35, 45 i 55 oraz kilka par przerw.
+Wynik jest zgodny z oczekiwaniami
 
 \end{document}
