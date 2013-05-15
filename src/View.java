@@ -65,9 +65,9 @@ public class View extends JFrame{
 		spaces = new Dimension(SPACE_SIZE, SPACE_SIZE);
 		fileChooser = new JFileChooser();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        URL imageURL = getClass().getResource("tux.png");
-        setIconImage(tk.createImage(imageURL));
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		URL imageURL = getClass().getResource("tux.png");
+		setIconImage(tk.createImage(imageURL));
 		setLayout(new BorderLayout());
 		initButtons();
 		initAreas();
@@ -82,60 +82,60 @@ public class View extends JFrame{
 	private void initButtons(){
 		matrixButton = new JButton("Matrix");
 		matrixButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new MatrixDialog(controller.getModel());
 			}
 		});
-		
+
 		openButton = new JButton("Open");
 		openButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-		        int returnVal = fileChooser.showOpenDialog(View.this);
-		        if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        	inputArea.setText("");
-		        	outputArea.setText("");
-		        	saveButton.setEnabled(false);
-		            File file = fileChooser.getSelectedFile();
-		            try {
-		            	BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
-		                String s1 = br.readLine();
-		                String s2 = br.readLine();
-		                String s3 = br.readLine();
-		                if (validateSequences(s1, s2, s3)){
-		                	runButton.setEnabled(true);
-		                	inputArea.setText(inputSequence1 + '\n' + inputSequence2 + '\n' + inputSequence3);
-		                } else {
-		                	runButton.setEnabled(false);
-		                	inputArea.setText("Data in file \"" + file.getName() + "\" is not valid");
-		                }
-		                br.close();
-		            } catch (IOException e) {
+				int returnVal = fileChooser.showOpenDialog(View.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					inputArea.setText("");
+					outputArea.setText("");
+					saveButton.setEnabled(false);
+					File file = fileChooser.getSelectedFile();
+					try {
+						BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+						String s1 = br.readLine();
+						String s2 = br.readLine();
+						String s3 = br.readLine();
+						if (validateSequences(s1, s2, s3)){
+							runButton.setEnabled(true);
+							inputArea.setText(inputSequence1 + '\n' + inputSequence2 + '\n' + inputSequence3);
+						} else {
+							runButton.setEnabled(false);
+							inputArea.setText("Data in file \"" + file.getName() + "\" is not valid");
+						}
+						br.close();
+					} catch (IOException e) {
 						e.printStackTrace();
 					} 
-		            
-		            
-		        }		        
+
+
+				}		        
 			}
 		});
-		
+
 		saveButton = new JButton("Save");
 		saveButton.setEnabled(false);
 		saveButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					File file = new File("result.txt");
-		 
+
 					// if file doesn't exists, then create it
 					if (!file.exists()) {
 						file.createNewFile();
 					}
-		 
+
 					FileWriter fw = new FileWriter(file.getAbsoluteFile());
 					BufferedWriter bw = new BufferedWriter(fw);
 					bw.write(outputSequence1 + '\n' + outputSequence2 + '\n' + outputSequence3);
@@ -148,7 +148,7 @@ public class View extends JFrame{
 		runButton = new JButton("Run");
 		runButton.setEnabled(false);
 		runButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveButton.setEnabled(true);
@@ -159,7 +159,7 @@ public class View extends JFrame{
 				double time = (double) (stopTime - startTime);
 				timeLabel.setText("Computing time: " + (double)Math.round(time * 100d) / 100000d + " sec");
 				memoryLabel.setText("Memory usage: " + controller.getMaxMemory() + "MB");
-				
+
 				outputSequence1 = "";
 				outputSequence2 = "";
 				outputSequence3 = "";
@@ -170,11 +170,11 @@ public class View extends JFrame{
 				SortedSet<Tuple> result = controller.getResult();
 				String gap = "-";
 				for ( Tuple t : result ) {
-//					System.out.println(t);
+					//					System.out.println(t);
 					difX = t.x - x;
 					difY = t.y - y;
 					difZ = t.z - z;
-					
+
 					if (difX == 1 && difY == 1 && difZ == 1){
 						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
 						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
@@ -204,7 +204,7 @@ public class View extends JFrame{
 						outputSequence2 = outputSequence2 + gap;
 						outputSequence3 = outputSequence3 + gap;
 					}
-					
+
 					x = t.x;
 					y = t.y;
 					z = t.z;
@@ -260,7 +260,7 @@ public class View extends JFrame{
 
 		mainPanel.add(sequencesPanel);
 		mainPanel.add(buttonsPanel);
-		
+
 		statusPanel = new JPanel();
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		statusPanel.setPreferredSize(new Dimension(this.getWidth(), 32));
@@ -268,14 +268,26 @@ public class View extends JFrame{
 		statusPanel.add(timeLabel);
 		statusPanel.add(memoryLabel);
 	}
-	
+
 	private boolean validateSequences(String s1, String s2, String s3){
 		String pattern = "[AGCT]+";
 		if ( s1 != null && s2 != null && s3 != null ){
-			inputSequence1 = s1.toUpperCase();
-			inputSequence2 = s2.toUpperCase();
-			inputSequence3 = s3.toUpperCase();
-			return (inputSequence1.matches(pattern) && inputSequence2.matches(pattern) && inputSequence3.matches(pattern));
+			if (s1.length() >= s2.length() && s1.length() >= s3.length()){
+				inputSequence1 = s1.toUpperCase();
+				inputSequence2 = s2.toUpperCase();
+				inputSequence3 = s3.toUpperCase();
+			} else if (s2.length() >= s1.length() && s2.length() >= s3.length())
+			{
+				inputSequence1 = s2.toUpperCase();
+				inputSequence2 = s1.toUpperCase();
+				inputSequence3 = s3.toUpperCase();
+			} else if (s3.length() >= s1.length() && s3.length() >= s2.length())
+			{
+				inputSequence1 = s3.toUpperCase();
+				inputSequence2 = s2.toUpperCase();
+				inputSequence3 = s1.toUpperCase();
+			}
+				return (inputSequence1.matches(pattern) && inputSequence2.matches(pattern) && inputSequence3.matches(pattern));
 		} else {
 			return false;
 		}
