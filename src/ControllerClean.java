@@ -12,17 +12,32 @@ public class ControllerClean {
 
 		@Override
 		public int compare(Tuple t1, Tuple t2) {
-			if (t1.x < t2.x && t1.y < t2.y && t1.z < t2.z)
-				return -1;
-			if (t1.x > t2.x && t1.y > t2.y && t1.z > t2.z)
-				return 1;
 			if (t1.x == t2.x && t1.y == t2.y && t1.z == t2.z)
 				return 0;
-			
-			if ((t1.x == t2.x && t1.y <= t2.y && t1.z <= t2.z) || (t1.x <= t2.x && t1.y == t2.y && t1.z <= t2.z) || (t1.x <= t2.x && t1.y <= t2.y && t1.z == t2.z))
+
+			// less when
+			// all less
+			if (t1.x < t2.x && t1.y < t2.y && t1.z < t2.z)
 				return -1;
-			if ((t1.x == t2.x && t1.y >= t2.y && t1.z >= t2.z) || (t1.x == t2.x && t1.y >= t2.y && t1.z >= t2.z) || (t1.x == t2.x && t1.y >= t2.y && t1.z >= t2.z))
+			// one equal, rest less
+			if ((t1.x == t2.x && t1.y < t2.y && t1.z < t2.z) || (t1.x < t2.x && t1.y == t2.y && t1.z < t2.z) || (t1.x < t2.x && t1.y < t2.y && t1.z == t2.z))
+				return -1;
+			// two equal, rest less
+			if ((t1.x == t2.x && t1.y == t2.y && t1.z < t2.z) || (t1.x < t2.x && t1.y == t2.y && t1.z == t2.z) || (t1.x == t2.x && t1.y < t2.y && t1.z == t2.z))
+				return -1;
+
+			// more when
+			// all more
+			if (t1.x > t2.x && t1.y > t2.y && t1.z > t2.z)
 				return 1;
+			// one equal, rest more
+			if ((t1.x == t2.x && t1.y > t2.y && t1.z > t2.z) || (t1.x > t2.x && t1.y == t2.y && t1.z > t2.z) || (t1.x > t2.x && t1.y > t2.y && t1.z == t2.z))
+				return 1;
+			// two equal, rest more
+			if ((t1.x == t2.x && t1.y == t2.y && t1.z > t2.z) || (t1.x > t2.x && t1.y == t2.y && t1.z == t2.z) || (t1.x == t2.x && t1.y > t2.y && t1.z == t2.z))
+				return 1;
+
+
 			return 0;
 		}
 	});
@@ -34,7 +49,7 @@ public class ControllerClean {
 		int cols = first.length() + 1;
 		int rows = second.length() + 1;
 		int depth = third.length() + 1;
-		
+
 		// Build full matrix
 		if (first.length() < 2 || second.length() < 2 || third.length() < 2) {
 			Cell matrix[][][] = new Cell[cols][rows][depth];
@@ -204,7 +219,7 @@ public class ControllerClean {
 					col1[i][j] = new Cell(max);
 				}
 			}
-			
+
 			for (int i = 1; i < cols; i++) {
 				// Create and fill col2 based on col1
 				col2 = new Cell[rows][depth];
@@ -308,7 +323,7 @@ public class ControllerClean {
 				// Swap cols
 				col1 = col2.clone();
 			}
-			
+
 			// Generate substrings
 			int y = col2[rows-1][depth-1].getIndex();
 			int z = col2[rows-1][depth-1].getIndex2();
@@ -360,7 +375,7 @@ public class ControllerClean {
 			index = 4;
 		return index;
 	}
-	
+
 	public Model getModel() {
 		return model;
 	}
@@ -368,14 +383,14 @@ public class ControllerClean {
 	public SortedSet<Tuple> getResult() {
 		return result;
 	}
-	
+
 	// Memory stats
 	private void memStats() {
 		Runtime runtime = Runtime.getRuntime();
 		long allocatedMemory = runtime.totalMemory();
 		memoryAllocation.add(allocatedMemory);
 	}
-	
+
 	// Returns memory allocation in MB
 	public long getMaxMemory() {
 		long max = 0;
@@ -385,7 +400,7 @@ public class ControllerClean {
 		}
 		return max / (1024*1024);
 	}
-	
+
 	public void reset() {
 		result.clear();
 	}

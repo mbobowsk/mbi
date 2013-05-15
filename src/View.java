@@ -21,7 +21,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
@@ -101,12 +100,15 @@ public class View extends JFrame{
 					inputArea.setText("");
 					outputArea.setText("");
 					saveButton.setEnabled(false);
+					timeLabel.setText("");
+					memoryLabel.setText("");
 					File file = fileChooser.getSelectedFile();
 					try {
 						BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
 						String s1 = br.readLine();
 						String s2 = br.readLine();
 						String s3 = br.readLine();
+						
 						if (validateSequences(s1, s2, s3)){
 							runButton.setEnabled(true);
 							inputArea.setText(inputSequence1 + '\n' + inputSequence2 + '\n' + inputSequence3);
@@ -174,6 +176,7 @@ public class View extends JFrame{
 				SortedSet<Tuple> result = controller.getResult();
 				String gap = "-";
 				for ( Tuple t : result ) {
+					System.out.println(t);
 					difX = t.x - x;
 					difY = t.y - y;
 					difZ = t.z - z;
