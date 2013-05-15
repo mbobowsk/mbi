@@ -21,6 +21,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
@@ -50,6 +51,7 @@ public class View extends JFrame{
 	private JLabel outputLabel;
 	private JLabel timeLabel;
 	private JLabel memoryLabel;
+//	private JProgressBar progressBar;
 	private Dimension spaces;
 	private JFileChooser fileChooser;
 	private String inputSequence1;
@@ -153,9 +155,11 @@ public class View extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				saveButton.setEnabled(true);
 				controller.reset();
+//				progressBar.setVisible(true);
 				Long startTime = System.currentTimeMillis();
 				controller.findSimilarity(inputSequence1, inputSequence2, inputSequence3, 0, 0, 0);
 				Long stopTime = System.currentTimeMillis();
+//				progressBar.setVisible(false);
 				double time = (double) (stopTime - startTime);
 				timeLabel.setText("Computing time: " + (double)Math.round(time * 100d) / 100000d + " sec");
 				memoryLabel.setText("Memory usage: " + controller.getMaxMemory() + "MB");
@@ -170,7 +174,6 @@ public class View extends JFrame{
 				SortedSet<Tuple> result = controller.getResult();
 				String gap = "-";
 				for ( Tuple t : result ) {
-					//					System.out.println(t);
 					difX = t.x - x;
 					difY = t.y - y;
 					difZ = t.z - z;
@@ -230,8 +233,11 @@ public class View extends JFrame{
 	private void initLabels(){
 		inputLabel = new JLabel("Input sequences:");
 		outputLabel = new JLabel("Output sequences:");
-		timeLabel = new JLabel("");
-		memoryLabel = new JLabel("");
+		timeLabel = new JLabel("Computing time: ");
+		memoryLabel = new JLabel("Memory usage: ");
+//		progressBar = new JProgressBar();
+//		progressBar.setIndeterminate(true);
+//		progressBar.setVisible(false);
 	}
 
 	private void initPanels(){
@@ -263,10 +269,11 @@ public class View extends JFrame{
 
 		statusPanel = new JPanel();
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-		statusPanel.setPreferredSize(new Dimension(this.getWidth(), 32));
+		statusPanel.setPreferredSize(new Dimension(this.getWidth(), 32/*48*/));
 		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
 		statusPanel.add(timeLabel);
 		statusPanel.add(memoryLabel);
+//		statusPanel.add(progressBar);
 	}
 
 	private boolean validateSequences(String s1, String s2, String s3){
@@ -292,7 +299,7 @@ public class View extends JFrame{
 			return false;
 		}
 	}
-
+	
 	public static void main(String[] args) {
 		ControllerClean c = new ControllerClean();
 		new View(c);
