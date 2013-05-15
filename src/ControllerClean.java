@@ -92,10 +92,10 @@ public class ControllerClean {
 							int up = matrix[i][j-1][k].getScore() + match('-', second.charAt(j-1), '-');
 							int max = Math.max(Math.max(leftCross,left),up);
 							if (max==leftCross) {
-								matrix[i][j][k] = new Cell(max, Directions.DIRECTION_RIGHTCROSS);
+								matrix[i][j][k] = new Cell(max, Directions.DIRECTION_LEFTCROSS);
 							}
 							else if (max==left) {
-								matrix[i][j][k] = new Cell(max, Directions.DIRECTION_RIGHT);
+								matrix[i][j][k] = new Cell(max, Directions.DIRECTION_LEFT);
 							}
 							else { //up
 								matrix[i][j][k] = new Cell(max, Directions.DIRECTION_UP);
@@ -147,7 +147,7 @@ public class ControllerClean {
 			int column = cols-1;
 			int row = rows-1;
 			int dep = depth-1;
-			while (column != 0 && row != 0 && dep != 0) {
+			while (column != 0 || row != 0 || dep != 0) {
 				result.add(new Tuple(column+offsetX, row+offsetY, dep+offsetZ));
 				switch(matrix[column][row][dep].getDirection()) {
 				case DIRECTION_CROSS:
@@ -392,16 +392,14 @@ public class ControllerClean {
 
 	public static void main(String[] args) {
 		ControllerClean c = new ControllerClean();
-		String first = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-		c.findSimilarity(first, first, first, 0, 0, 0);
-		/*for ( Tuple t : c.result ) {
+		String first = "T";
+		String second = "C";
+		String third = "CT";
+		c.findSimilarity(first, second, third, 0, 0, 0);
+		for ( Tuple t : c.result ) {
 			System.out.println(t);
-		}*/
-		System.out.println(c.getMaxMemory());
+		}
+		//System.out.println(c.getMaxMemory());
 	}
 
 }
