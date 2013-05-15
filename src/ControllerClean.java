@@ -385,6 +385,10 @@ public class ControllerClean {
 		}
 		return max / (1024*1024);
 	}
+	
+	public void reset() {
+		result.clear();
+	}
 
 	public static void main(String[] args) {
 		ControllerClean c = new ControllerClean();

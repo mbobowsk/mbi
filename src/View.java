@@ -150,10 +150,13 @@ public class View extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveButton.setEnabled(true);
+				controller.reset();
 				Long startTime = System.currentTimeMillis();
 				controller.findSimilarity(inputSequence1, inputSequence2, inputSequence3, 0, 0, 0);
 				Long stopTime = System.currentTimeMillis();
-				statusLabel.setText("Computing time: " + (stopTime - startTime)/1000 + " sec");
+				double time = (double) (stopTime - startTime);
+				statusLabel.setText("Computing time: " + (double)Math.round(time * 100d) / 100000d + " sec");
+				
 				outputSequence1 = "";
 				outputSequence2 = "";
 				outputSequence3 = "";
