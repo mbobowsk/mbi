@@ -25,6 +25,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
+/**
+ * View.
+ * MainWindow class. 
+ * Displays buttons and input/output sequences.
+ */
+
 
 public class View extends JFrame{
 
@@ -47,7 +53,6 @@ public class View extends JFrame{
 	private JLabel outputLabel;
 	private JLabel timeLabel;
 	private JLabel memoryLabel;
-//	private JProgressBar progressBar;
 	private Dimension spaces;
 	private JFileChooser fileChooser;
 	private String inputSequence1;
@@ -97,8 +102,8 @@ public class View extends JFrame{
 					inputArea.setText("");
 					outputArea.setText("");
 					saveButton.setEnabled(false);
-					timeLabel.setText("");
-					memoryLabel.setText("");
+					timeLabel.setText("Computing time: ");
+					memoryLabel.setText("Memory usage: ");
 					File file = fileChooser.getSelectedFile();
 					try {
 						BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
@@ -154,11 +159,9 @@ public class View extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				saveButton.setEnabled(true);
 				controller.reset();
-//				progressBar.setVisible(true);
 				Long startTime = System.currentTimeMillis();
 				controller.findSimilarity(inputSequence1, inputSequence2, inputSequence3, 0, 0, 0);
 				Long stopTime = System.currentTimeMillis();
-//				progressBar.setVisible(false);
 				double time = (double) (stopTime - startTime);
 				timeLabel.setText("Computing time: " + (double)Math.round(time * 100d) / 100000d + " sec");
 				memoryLabel.setText("Memory usage: " + controller.getMaxMemory() + "MB");
@@ -173,11 +176,11 @@ public class View extends JFrame{
 				SortedSet<Tuple> result = controller.getResult();
 				String gap = "-";
 				for ( Tuple t : result ) {
-					System.out.println(t);
 					difX = t.x - x;
 					difY = t.y - y;
 					difZ = t.z - z;
 
+					// all 7 possible directions
 					if (difX == 1 && difY == 1 && difZ == 1){
 						outputSequence1 = outputSequence1 + inputSequence1.charAt(t.x-1);
 						outputSequence2 = outputSequence2 + inputSequence2.charAt(t.y-1);
@@ -223,6 +226,7 @@ public class View extends JFrame{
 		inputArea.setEditable(false);
 		inputArea.setFont(new Font("Monospaced",Font.PLAIN,12));
 		inputScrollPane = new JScrollPane(inputArea);
+		
 		outputArea = new JTextArea();
 		outputArea.setRows(3);
 		outputArea.setEditable(false);
@@ -235,9 +239,6 @@ public class View extends JFrame{
 		outputLabel = new JLabel("Output sequences:");
 		timeLabel = new JLabel("Computing time: ");
 		memoryLabel = new JLabel("Memory usage: ");
-//		progressBar = new JProgressBar();
-//		progressBar.setIndeterminate(true);
-//		progressBar.setVisible(false);
 	}
 
 	private void initPanels(){
@@ -269,16 +270,16 @@ public class View extends JFrame{
 
 		statusPanel = new JPanel();
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-		statusPanel.setPreferredSize(new Dimension(this.getWidth(), 32/*48*/));
+		statusPanel.setPreferredSize(new Dimension(this.getWidth(), 32));
 		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
 		statusPanel.add(timeLabel);
 		statusPanel.add(memoryLabel);
-//		statusPanel.add(progressBar);
 	}
 
 	private boolean validateSequences(String s1, String s2, String s3){
-		String pattern = "[AGCT]+";
+		String pattern = "[AGCT]+"; // regex for nucleotides
 		if ( s1 != null && s2 != null && s3 != null ){
+			// find longest sequence and set it as inputSequence1
 			if (s1.length() >= s2.length() && s1.length() >= s3.length()){
 				inputSequence1 = s1.toUpperCase();
 				inputSequence2 = s2.toUpperCase();

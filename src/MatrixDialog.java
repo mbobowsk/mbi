@@ -18,12 +18,13 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * MatrixDialog.
+ * Allows displaying and editing similarity matrix.
+ */
 
 public class MatrixDialog extends JDialog{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8226321878100835070L;
 	private Model model;
 	private JPanel mainPanel;
