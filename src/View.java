@@ -28,12 +28,9 @@ import javax.swing.border.BevelBorder;
 
 public class View extends JFrame{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6775398136175415140L;
 	private static int SPACE_SIZE = 5;
-	private ControllerClean controller;
+	private Controller controller;
 	private JPanel mainPanel;
 	private JPanel buttonsPanel;
 	private JPanel sequencesPanel;
@@ -60,7 +57,7 @@ public class View extends JFrame{
 	private String outputSequence2;
 	private String outputSequence3;
 
-	View(ControllerClean controller){
+	View(Controller controller){
 		super("DNA sequences");
 		this.controller = controller;
 		spaces = new Dimension(SPACE_SIZE, SPACE_SIZE);
@@ -304,7 +301,7 @@ public class View extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		ControllerClean c = new ControllerClean();
+		Controller c = new Controller();
 		new View(c);
 	}
 

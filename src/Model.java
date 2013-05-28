@@ -1,10 +1,10 @@
 /**
- * Klasa przechowująca wszystkie dane statyczne potrzebne do działania algorytmu.
+ * Container for constant data.
  */
 
 public class Model {
 	
-	/* Przykładowa macierz kar i nagród z wykładu
+	/*
 	     A 	 G   C 	 T  -
 	A 	10 	-1 	-3 	-4  c
 	G 	-1 	7 	-5 	-3  c
@@ -12,11 +12,7 @@ public class Model {
 	T 	-4 	-3 	 0 	 8  c
 	-    c   c   c   c  0*/
 	public int similarityMatrix[][];
-	
-	// Kara za przerwę
 	public int gap;	
-	
-	// Kara za wiszący nukleotyd
 	public int c;
 	
 	Model() {

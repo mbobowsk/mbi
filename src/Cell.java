@@ -1,5 +1,6 @@
 /**
- * Klasa reprezentujące pojedynczy element tablicy.
+ * Cell from matrix.
+ * Contains heuristic score and 2-dimensional index of its origin.
  */
 
 public class Cell {
@@ -15,21 +16,15 @@ public class Cell {
 		this.direction = direction;
 	}
 	
-	// Dwa wymiary
-	Cell(int score, int index) {
-		this.score = score;
-		this.index = index;
-	}
-	
-	// Trzy wymiary
 	Cell(int score, int index, int index2) {
 		this.score = score;
 		this.index = index;
 		this.index2 = index2;
 	}
 	
-	// Heurystyczna ocena połączenia
 	private int score;
+	private int index = -1;
+	private int index2 = -1;
 	
 	public int getScore() {
 		return score;
@@ -39,20 +34,12 @@ public class Cell {
 		this.score = score;
 	}
 
-	// Indeks oznaczający komórkę źródłową
-	int index = -1;
-	int index2 = -1;
-
 	public int getIndex() {
 		return index;
 	}
 	
 	public int getIndex2() {
 		return index2;
-	}
-
-	public void setIndex(int index) {
-		this.index = index;
 	}
 	
 	public void setIndex(int index, int index2) {
